@@ -20,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        APIExample apiExample = new APIExample();
-        apiExample.testGet();
+//        APIExample apiExample = new APIExample();
+//        apiExample.testGet();
+        APIImpl api = new APIImpl();
+        api.getClientProfile(2);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

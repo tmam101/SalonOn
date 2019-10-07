@@ -18,7 +18,7 @@ public class APIExample {
             // This is an asynchronous method to run the code.  See below.
             NetworkGet task = new NetworkGet();
             // TODO I don't know what parameters this function takes.  I've entered an empty string.
-            String json = task.execute(" ").get();
+            String json = task.execute("https://salon-on-backend.herokuapp.com/test").get();
             // The returned object is in the form of "testKey" : "testValue"
             JSONObject jsonObject = new JSONObject(json);
             // Access testValue by using its key
@@ -38,7 +38,7 @@ public class APIExample {
     // TUTORIAL:
     // https://www.testingexcellence.com/how-to-parse-json-in-java/
 
-    public void print(String message) {
+    private void print(String message) {
         Log.i(TAG, message);
     }
 
@@ -52,7 +52,7 @@ public class APIExample {
         protected String doInBackground(String... urls) {
             try {
                 // Create a connection to the "test" endpoint on our server.
-                URL url = new URL("https://salon-on-backend.herokuapp.com/test");
+                URL url = new URL(urls[0]);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("GET");
                 con.setRequestProperty("Content-Type", "application/json");
@@ -60,15 +60,14 @@ public class APIExample {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(con.getInputStream()));
                 String inputLine;
-                StringBuffer content = new StringBuffer();
+                StringBuilder content = new StringBuilder();
                 while ((inputLine = in.readLine()) != null) {
                     content.append(inputLine);
                 }
                 in.close();
                 con.disconnect();
-                String m = content.toString();
                 // Return the string.
-                return m;
+                return content.toString();
             } catch (Exception e) {
                 this.exception = e;
                 return null;
