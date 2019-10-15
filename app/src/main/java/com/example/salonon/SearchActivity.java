@@ -109,4 +109,10 @@ public class SearchActivity extends AppCompatActivity {
 
         startActivity(mapIntent);
     }
+
+    public void stylistProfileOnClick(View v) {
+        // Create activity_profile Intent;
+        Intent stylistProfileIntent = new Intent(SearchActivity.this, ProfileActivity.class);
+        startActivity(stylistProfileIntent);
+    }
 }
