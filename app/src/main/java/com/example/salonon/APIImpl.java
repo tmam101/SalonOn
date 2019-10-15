@@ -18,6 +18,22 @@ import java.util.Map;
 public class APIImpl implements API {
     Network network = new Network();
 
+    private Profile jsonToProfile(String jsonString) {
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            // TODO This isn't quite right yet
+            String typeOfProfile = json.getString("isStylist") == "0" ? (int) json.get("isSalon") == 0 ? "Client" : "Salon" : "Stylist";
+            String email = (String) json.get("email");
+            String firstName = (String) json.get("first");
+            String lastName = (String) json.get("last");
+            String bio = json.get("stylistBio") == "null" ? (String) json.get("salonBio") : (String) json.get("stylistBio");
+            Profile profile = new Profile(typeOfProfile, email, null, firstName, lastName, null, null, null, null, null, null, bio, null);
+            return profile;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public String createNewProfile(Profile profileToAddToDatabase) {
         try {
             Map<String, String> parameters = new HashMap<>();
@@ -60,16 +76,7 @@ public class APIImpl implements API {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("user", emailAddress);
             parameters.put("pass", password);
-            String response = network.post(network.herokuTestURL + "login", parameters);
-            JSONObject json = new JSONObject(response);
-            // TODO This isn't quite right yet
-            String typeOfProfile = json.getString("isStylist") == "0" ? (int) json.get("isSalon") == 0 ? "Client" : "Salon" : "Stylist";
-            String email = (String) json.get("email");
-            String firstName = (String) json.get("first");
-            String lastName = (String) json.get("last");
-            String bio = json.get("stylistBio") == "null" ? (String) json.get("salonBio") : (String) json.get("stylistBio");
-            Profile profile = new Profile(typeOfProfile, email, null, firstName, lastName, null, null, null, null, null, null, bio, null);
-            return profile;
+            return jsonToProfile(network.post(network.herokuTestURL + "login", parameters));
         } catch (Exception e) {
             return null;
         }
