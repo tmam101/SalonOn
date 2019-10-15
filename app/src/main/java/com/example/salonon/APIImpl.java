@@ -3,6 +3,7 @@ package com.example.salonon;
 import android.media.Image;
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -82,10 +83,16 @@ public class APIImpl implements API {
         try {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("zip", profile.zipCode);
+            parameters.put("radius", "10");
             String response = network.post(network.herokuTestURL + "searchstylistslocation", parameters);
             JSONObject json = new JSONObject(response);
-            Profile[] profiles = (Profile[]) json.get("Profiles");
-            return profiles;
+            JSONArray array = json.getJSONArray("profiles");
+            for(int i=0;i<array.length();i++)
+            {
+                JSONObject object= array.getJSONObject(i);
+                JSONObject object2= array.getJSONObject(i);
+            }
+            return null;
         } catch (Exception e) {
             return null;
         }
