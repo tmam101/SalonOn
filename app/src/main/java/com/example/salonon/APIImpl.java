@@ -68,7 +68,7 @@ public class APIImpl implements API {
             String firstName = (String) json.get("first");
             String lastName = (String) json.get("last");
             String bio = json.get("stylistBio") == "null" ? (String) json.get("salonBio") : (String) json.get("stylistBio");
-            Profile profile = new Profile(typeOfProfile, email, null, firstName, lastName, null, null, null, null, null, null, bio, null);
+            Profile profile = new Profile(typeOfProfile, email, null, firstName, lastName, null, null, null, null, null, null, bio, null, null);
             return profile;
         } catch (Exception e) {
             return null;
@@ -78,9 +78,17 @@ public class APIImpl implements API {
 
     /* Given an email and password, returns the Profile information for a given account. */
 
-    public Profile[] stylistSearchForProfilesByLocation(String latitude, String longitude, int radius) {
-        return null;
-
+    public Profile[] stylistSearchForProfilesByLocation(Profile profile) {
+        try {
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("zip", profile.zipCode);
+            String response = network.post(network.herokuTestURL + "searchstylistslocation", parameters);
+            JSONObject json = new JSONObject(response);
+            Profile[] profiles = (Profile[]) json.get("Profiles");
+            return profiles;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public Profile[] salonSearchForProfilesByLocation(String latitude, String longitude, int radius) {
