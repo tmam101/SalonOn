@@ -40,7 +40,7 @@ public class SearchActivity extends AppCompatActivity {
 
         // Display stylists in activity_search
 
-        Profile[] arrayOfStylists = api.stylistSearchForProfilesByLocation(latitude, longitude, radius);
+        Profile[] arrayOfStylists = api.stylistSearchForProfilesByLocation(userProfile);
         if (arrayOfStylists != null) {
             fillSearchActivityWithData(arrayOfStylists);
         } else {
