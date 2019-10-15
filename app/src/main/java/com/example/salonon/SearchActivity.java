@@ -53,8 +53,8 @@ public class SearchActivity extends AppCompatActivity {
             Booking[] bookings = new Booking[1];
             String name = "test!!!";
             String phoneNumber = "999";
-            String zipcode = "27599";
-            Profile testProfile = makeProfile("Stylist", email, password, name, image,true,true, true, phoneNumber, creditCardNumber, bio, bookings, zipcode);
+            String zipCode = "27599";
+            Profile testProfile = makeProfile("Stylist", email, password, name, image,true,true, true, phoneNumber, creditCardNumber, bio, bookings, zipCode);
             Profile[] testProfiles = new Profile[1];
             testProfiles[0] = testProfile;
             fillSearchActivityWithData(testProfiles);
