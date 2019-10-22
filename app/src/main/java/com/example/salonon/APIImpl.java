@@ -56,7 +56,7 @@ public class APIImpl implements API {
                 parameters.put("isStylist", "FALSE");
                 parameters.put("salonBio", "NULL");
             }
-            String response = network.post(network.herokuTestURL + "createuser", parameters);
+            String response = network.post(network.herokuURL + "createuser", parameters);
             JSONObject jsonStatus = new JSONObject(response);
             String status = (String) jsonStatus.get("status");
             return status;
@@ -76,7 +76,7 @@ public class APIImpl implements API {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("user", emailAddress);
             parameters.put("pass", password);
-            String response = network.post(network.herokuTestURL + "login", parameters);
+            String response = network.post(network.herokuURL + "login", parameters);
             JSONObject json = new JSONObject(response);
             // TODO This isn't quite right yet
             JSONObject profile = json.getJSONObject("profile");
@@ -100,7 +100,7 @@ public class APIImpl implements API {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("zip", "27514");
             parameters.put("radius", "10");
-            String response = network.post(network.herokuTestURL + "searchstylistslocation", parameters);
+            String response = network.post(network.herokuURL + "searchstylistslocation", parameters);
             JSONObject json = new JSONObject(response);
             JSONArray array = json.getJSONArray("profiles");
             Profile[] objects = new Profile[array.length()];
@@ -124,7 +124,7 @@ public class APIImpl implements API {
         try {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("id", String.valueOf(id));
-            String response = network.post(network.herokuTestURL + "amenity-by-id", parameters);
+            String response = network.post(network.herokuURL + "amenity-by-id", parameters);
             JSONObject jsonAmenity = new JSONObject(response);
             String name = (String) jsonAmenity.get("name");
             return name;
