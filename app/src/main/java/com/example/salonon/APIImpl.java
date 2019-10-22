@@ -19,6 +19,20 @@ import java.util.Map;
 public class APIImpl implements API {
     Network network = new Network();
 
+    public Profile jsonToProfile(JSONObject profile) {
+        try {
+            String typeOfProfile = (int) profile.get("isStylist") == 0 ? (int) profile.get("isSalon") == 0 ? "Client" : "Salon" : "Stylist";
+            String email = (String) profile.get("email");
+            String firstName = (String) profile.get("first");
+            String lastName = (String) profile.get("last");
+            String bio = profile.get("stylistBio") == "null" ? (String) profile.get("salonBio") : (String) profile.get("stylistBio");
+            Profile newProfile = new Profile(typeOfProfile, email, null, firstName, lastName, null, null, null, null, null, null, bio, null, null);
+            return newProfile;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public String createNewProfile(Profile profileToAddToDatabase) {
         try {
             Map<String, String> parameters = new HashMap<>();
@@ -39,7 +53,8 @@ public class APIImpl implements API {
 //                TODO salon rate
             } else {
                 parameters.put("isSalon", "FALSE");
-                parameters.put("salonBio", "NONE");
+                parameters.put("isStylist", "FALSE");
+                parameters.put("salonBio", "NULL");
             }
             String response = network.post(network.herokuTestURL + "createuser", parameters);
             JSONObject jsonStatus = new JSONObject(response);
@@ -64,13 +79,14 @@ public class APIImpl implements API {
             String response = network.post(network.herokuTestURL + "login", parameters);
             JSONObject json = new JSONObject(response);
             // TODO This isn't quite right yet
-            String typeOfProfile = json.getString("isStylist") == "0" ? (int) json.get("isSalon") == 0 ? "Client" : "Salon" : "Stylist";
-            String email = (String) json.get("email");
-            String firstName = (String) json.get("first");
-            String lastName = (String) json.get("last");
-            String bio = json.get("stylistBio") == "null" ? (String) json.get("salonBio") : (String) json.get("stylistBio");
-            Profile profile = new Profile(typeOfProfile, email, null, firstName, lastName, null, null, null, null, null, null, bio, null, null);
-            return profile;
+            JSONObject profile = json.getJSONObject("profile");
+            String typeOfProfile = (int) profile.get("isStylist") == 0 ? (int) profile.get("isSalon") == 0 ? "Client" : "Salon" : "Stylist";
+            String email = (String) profile.get("email");
+            String firstName = (String) profile.get("first");
+            String lastName = (String) profile.get("last");
+            String bio = profile.get("stylistBio") == "null" ? (String) profile.get("salonBio") : (String) profile.get("stylistBio");
+            Profile newProfile = new Profile(typeOfProfile, email, null, firstName, lastName, null, null, null, null, null, null, bio, null, null);
+            return newProfile;
         } catch (Exception e) {
             return null;
         }
@@ -78,21 +94,21 @@ public class APIImpl implements API {
     }
 
     /* Given an email and password, returns the Profile information for a given account. */
-
+//todo profiles don't have zipcodes.  use mock data? pass the email to the server and have the server query the database?
     public Profile[] stylistSearchForProfilesByLocation(Profile profile) {
         try {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("zip", profile.zipCode);
+            parameters.put("zip", "27514");
             parameters.put("radius", "10");
             String response = network.post(network.herokuTestURL + "searchstylistslocation", parameters);
             JSONObject json = new JSONObject(response);
             JSONArray array = json.getJSONArray("profiles");
+            Profile[] objects = new Profile[array.length()];
             for(int i=0;i<array.length();i++)
             {
-                JSONObject object= array.getJSONObject(i);
-                JSONObject object2= array.getJSONObject(i);
+                objects[i] = jsonToProfile(array.getJSONObject(i));
             }
-            return null;
+            return objects;
         } catch (Exception e) {
             return null;
         }
