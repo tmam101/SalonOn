@@ -103,6 +103,7 @@ public class APIImpl implements API {
 
     }
 
+    // TODO Delete?
     public String getAmenityByID(int id) {
         try {
             Map<String, String> parameters = new HashMap<>();
@@ -119,7 +120,7 @@ public class APIImpl implements API {
     public Profile getClientProfile(int clientID) {
         try {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("clientID", String.valueOf(clientID));
+            parameters.put("id", String.valueOf(clientID));
             String response = network.post(network.herokuURL + "client-by-id", parameters);
             JSONObject jsonProfile = new JSONObject(response);
             String firstName = (String) jsonProfile.get("firstName");
