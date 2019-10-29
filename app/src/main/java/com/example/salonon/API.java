@@ -4,7 +4,7 @@ public interface API {
 
 
     String createNewProfile(Profile profileToAddToDatabase);
-
+    //
     //
     /* Given an Profile object, adds the activity_profile to the database. Returns a String to signify
     whether the adding to the database was successful or a failure. If the string is "Success"
